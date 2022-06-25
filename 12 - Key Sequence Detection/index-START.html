@@ -7,6 +7,22 @@
 </head>
 <body>
 <script>
+  const pressed = []
+  const secretCode = "benjamin"
+
+  const letterToSave = (e) => {
+    pressed.push(e.key);
+    pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length);
+
+    wordPressed = pressed.join("");
+
+    if (wordPressed === secretCode) {
+      cornify_add();
+    }
+  }
+
+  window.addEventListener('keyup', e => letterToSave(e))
+
 </script>
 </body>
 </html>
