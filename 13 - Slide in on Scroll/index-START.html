@@ -43,6 +43,8 @@
   </div>
 
   <script>
+    const images = document.querySelectorAll('.slide-in');
+
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -58,6 +60,22 @@
       };
     }
 
+    function slideInImages(e) {
+      images.forEach((image) => {
+        const pageBottom = window.scrollY + window.innerHeight
+        const slideInAt = pageBottom - image.height / 2;
+        const imageBottom = image.offsetTop + image.height;
+
+        if (image.offsetTop < slideInAt && window.scrollY < imageBottom) {
+          image.classList.add('active');
+        } else {
+          image.classList.remove('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', debounce(slideInImages))
+
   </script>
 
   <style>
@@ -68,11 +86,11 @@
       font-size: 20px;
       font-weight: 200;
     }
-    
+
     body {
       margin: 0;
     }
-    
+
     *, *:before, *:after {
       box-sizing: inherit;
     }
@@ -107,7 +125,7 @@
     .align-left.slide-in {
       transform: translateX(-30%) scale(0.95);
     }
-    
+
     .align-right.slide-in {
       transform: translateX(30%) scale(0.95);
     }
