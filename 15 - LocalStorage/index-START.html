@@ -26,39 +26,48 @@
   </div>
 
 <script>
-  const addItems = document.querySelector('.add-items');
+    const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
   const items = JSON.parse(localStorage.getItem('items')) || [];
 
   function addItem(e) {
     e.preventDefault();
-    const item = (this.querySelector('[name=item]')).value;
-    const itemObject = {
-      name: item,
+    const text = (this.querySelector('[name=item]')).value;
+    const item = {
+      text,
       done: false
-    }
-    items.push(itemObject);
-    showItems(items, itemsList);
+    };
 
-    localStorage.setItem('item', JSON.stringify(items))
-
+    items.push(item);
+    populateList(items, itemsList);
+    localStorage.setItem('items', JSON.stringify(items));
     this.reset();
   }
 
-  const showItems = (listToDisplay = [], areaToInsert) => {
-    areaToInsert.innerHTML = listToDisplay.map((item, i) =>{
+  function populateList(plates = [], platesList) {
+    platesList.innerHTML = plates.map((plate, i) => {
       return `
         <li>
-          <input type='checkbox' id='item${i}' data-index='${i}'></input>
-          <label for='item${i}'>${item.name}</label>
+          <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''} />
+          <label for="item${i}">${plate.text}</label>
         </li>
-      `
-    }).join('')
+      `;
+    }).join('');
   }
 
-  addItems.addEventListener('submit', addItem)
+  function toggleDone(e) {
+    if (!e.target.matches('input')) return; // skip this unless it's an input
+    const el = e.target;
+    const index = el.dataset.index;
+    items[index].done = !items[index].done;
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+  }
 
-  showItems(items, itemsList);
+  addItems.addEventListener('submit', addItem);
+  itemsList.addEventListener('click', toggleDone);
+
+  populateList(items, itemsList);
 </script>
 
 
