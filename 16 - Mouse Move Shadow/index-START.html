@@ -25,7 +25,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: black;
+    color: rgb(99, 9, 110);
   }
 
   h1 {
@@ -35,6 +35,26 @@
   </style>
 
 <script>
+  const textDiv = document.querySelector('.hero');
+  const text = textDiv.querySelector('h1');
+  const maxDistance = 20;
+
+  function moveShadow(e) {
+    const { offsetWidth: width, offsetHeight: height } = textDiv;
+    let { offsetX: x, offsetY: y } = e
+
+    if ( this !== e.target ) {
+      x += e.target.offsetLeft;
+      y += e.target.offsetTop;
+    }
+
+    const xWalk = Math.round((x / width * maxDistance) - (maxDistance / 2));
+    const yWalk = Math.round((y / height * maxDistance) - (maxDistance / 2));
+
+    text.style.textShadow = `${-xWalk}px ${-yWalk}px 0 rgba(0,0,0,1)`
+  }
+
+  textDiv.addEventListener("mousemove", moveShadow);
 </script>
 </body>
 </html>
