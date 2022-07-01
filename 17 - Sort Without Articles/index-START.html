@@ -53,13 +53,7 @@ const removeArticle = (band) => {
   return band.replace(/^(a |an |the )/i, '').trim();
 }
 
-const sortedBands = bands.sort((a, b) => {
-  if (removeArticle(a) > removeArticle(b)) {
-    return 1;
-  } else {
-    return -1;
-  };
-});
+const sortedBands = bands.sort((a, b) => { return removeArticle(a) > removeArticle(b) ? 1 : -1});
 
 bandList.innerHTML = sortedBands.map((band) => {
   return `
